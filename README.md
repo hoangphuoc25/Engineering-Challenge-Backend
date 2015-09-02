@@ -45,6 +45,8 @@ The end point should return the food titles in JSON format
 * You will have to also build an api endpoint to then retrive the nutritional information for a given food id.
 * There should also be an endpoint to manually insert data into the database.
 
+### Autocomplete
+* The autocomplete must use one of the state of the art technologies (e.g. Elastic search)
 
 ## Judging Criteria 
 * What you have produced will determine your final outcome. You will be scored based upon your coding style and the ability to follow "good code" [See: Google Javascript Guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml)
