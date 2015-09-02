@@ -50,7 +50,7 @@ The end point should return the food titles in JSON format
 * The autocomplete must use one of the state of the art technologies (e.g. Elastic search)
 
 ### Testing
-* Write both integration & unit tests, especially the code for scrapping food data
+* Write both integration & unit tests. The tests should cover food scraping as well as the API end points.
 
 ## Judging Criteria 
 * What you have produced will determine your final outcome. You will be scored based upon your coding style and the ability to follow "good code" [See: Google Javascript Guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml)
