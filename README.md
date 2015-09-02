@@ -27,6 +27,7 @@ This is the Holmusk backend developer challenge. The rules of the challenge are 
 (e.g [MyFitnessPal Food](http://www.myfitnesspal.com/food/calories/179990009) )
 * You will then need to provide an endpoint using [SailsJS](http://sailsjs.com) to provide autocomplete data for queries. 
 * Using a food id sent to the frontend using the autocomplete request. There should be an endpoint for to show us the nutritional information of the particular food.
+* Also write tests (for example with Mocha, Sinon...)
  
 
 ### Bits and Pieces to take note of
