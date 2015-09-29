@@ -86,29 +86,22 @@ function createNutritionObject(foodId, obj) {
 	  			obj.nutritionalTable[objValue.keys[i]] = objValue.values[i];
 	  	}
 	  });
+  	
+  	db.fooditem.insert(obj.nutritionalTable);
 
-  	
-  	var testObj = {foodId: foodId};
-  	console.log(foodId, ':', obj.nutritionalTable);
-  	
-  	db.fooditem.find(testObj, {}, function(err, rows) {
-  		if (!err) {
-  			console.log('no error ', foodId);
-  			console.log('insert: ', obj.nutritionalTable);
-  			if (foodId === '10147') {
-  				console.log('inspecting 10147: ', rows);
-  			}
-  			if (rows.length == 0) {
-					console.log('inserting');
-					db.fooditem.insert(obj.nutritionalTable);
-				}
-  		} else {
-  			console.log(err.stack);
-  		}
-  	});
-  	
 	  return obj;
 };
+
+function getpages(link) {
+	var result = [];
+	x(link, '.pagination.alt.padtop', ['a'])(function(err, obj) {
+		var max = parseInt(obj[obj.length - 2], 10);
+		for (var i = 0; i < max; i++) {
+			result.push(link + '/' + i);
+		}
+		return result;
+	});
+}
 
 // xray('http://www.myfitnesspal.com/food/calories/6287', '#nutrition-facts tbody tr', [{
 // 	keys: ['td.col-1'],
