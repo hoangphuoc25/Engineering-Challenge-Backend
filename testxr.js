@@ -14,16 +14,14 @@ function step1() {
 			link: 'a@href'
 		}])
 		(function(err, obj) {
-		  if (err) {
-		  	  reject(err);	
-		  } else {
-		  	// console.log('step1: ', obj);
-		  	resolve(obj);
-		  }
+			if (err) {
+				reject(err);	
+			} else {
+				resolve(obj);
+			}
 		});	
 	});
 }
-
 
 function step2(foodTypeUrl) {
 	return new Promise(function Promise(resolve, reject) {
@@ -31,7 +29,6 @@ function step2(foodTypeUrl) {
 			if(err){
 				reject(err);
 			} else{
-				// console.log('step2: ', obj);
 				resolve(obj);
 			}
 		});
@@ -44,13 +41,10 @@ step1()
 	})
 	.then(function then(step1Result) {
 		step1Result = [].concat.apply([], step1Result);
-		console.log(step1Result);
 		return step1Result;
 	})
 	.map(function map(objChild) {
-		
-			return step3(objChild.link);
-		
+		return step3(objChild.link);
 	})
 	.then(function then(arr) {
 		db.close()
@@ -62,7 +56,6 @@ step1()
 function step3(foodItemUrl) {
 	return new Promise(function Promise(resolve, reject) {
 		var a = foodItemUrl.split('/');
-		// console.log('step3: ', foodItemUrl);
 		var foodId = a[a.length - 1];
 		if (!isNaN(a[a.length - 1])) {
 			xray(foodItemUrl, '#main', {
@@ -74,7 +67,6 @@ function step3(foodItemUrl) {
 		    }
 			})(function(err, obj) {
 				if (!err) {
-					// console.log(foodId);
 					var t = createNutritionObject(foodId, obj);
 					resolve(t);
 				} else {
@@ -86,32 +78,26 @@ function step3(foodItemUrl) {
 };
 
 function createNutritionObject(foodId, obj) {
-		// obj.nutritionValue = {foodId: foodId};
-		obj.foodId = foodId;
-		obj.company = obj.company.substring(10, obj.company.length);
-	  // _.map(obj, function map(objValue) {
-	  // 	for (var i = 0; i < objValue.keys.length; i++) {
-	  // 		if (objValue.keys[i].trim())
-	  // 			obj.nutrition[objValue.keys[i]] = objValue.values[i];
-	  // 	}
-	  // });
-		for (var i = 0; i < obj.nutrition.nutritionName.length; i++) {
-			if (obj.nutrition.nutritionName[i].trim())
-				obj.nutrition[obj.nutrition.nutritionName[i]] = obj.nutrition.nutritionValue[i];
-		}
-		delete obj.nutrition.nutritionName;
-		delete obj.nutrition.nutritionValue;
-  	
-  	console.log('inserting ', obj);
-  	db.fooditem.insert(obj, function(err, row) {
-  		if (err) {
-  			console.log('error line 108: ', err.stack);
-  		} else {
-  			console.log(row);
-  		}
-  	});
+	obj.foodId = foodId;
+	obj.company = obj.company.substring(10, obj.company.length);
 
-	  return obj;
+	for (var i = 0; i < obj.nutrition.nutritionName.length; i++) {
+		if (obj.nutrition.nutritionName[i].trim())
+			obj.nutrition[obj.nutrition.nutritionName[i]] = obj.nutrition.nutritionValue[i];
+	}
+	delete obj.nutrition.nutritionName;
+	delete obj.nutrition.nutritionValue;
+ 
+ 	console.log('inserting ', obj);
+	db.fooditem.insert(obj, function(err, row) {
+		if (err) {
+			console.log('error line 108: ', err.stack);
+		} else {
+			console.log(row);
+		}
+	});
+
+	return obj;
 };
 
 function getpages(link) {
@@ -124,11 +110,3 @@ function getpages(link) {
 		return result;
 	});
 }
-
-// xray('http://www.myfitnesspal.com/food/calories/6287', '#nutrition-facts tbody tr', [{
-// 	keys: ['td.col-1'],
-// 	values: ['td.col-2']
-// }])(function(err, obj) {
-// 	if (!err)
-// 		createNutritionObject(obj);
-// });
