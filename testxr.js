@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 
 var mongojs = require('mongojs');
-var dbUrl = 'phuoc';
+var dbUrl = 'phuoc_2';
 var collections = ['fooditem'];
 var db = mongojs(dbUrl, collections);
 
@@ -42,13 +42,18 @@ step1()
 	.map(function map(objChild) {
 		return step2(objChild.link);
 	})
+	.then(function then(step1Result) {
+		step1Result = [].concat.apply([], step1Result);
+		console.log(step1Result);
+		return step1Result;
+	})
 	.map(function map(objChild) {
-		return Promise.map(objChild, function map(objChildChild) {
-			return step3(objChildChild.link);
-		});
+		
+			return step3(objChild.link);
+		
 	})
 	.then(function then(arr) {
-		console.log(arr);
+		db.close()
 	})
 	.catch(function error(err) {
 		console.log(err.stack);
@@ -60,14 +65,17 @@ function step3(foodItemUrl) {
 		// console.log('step3: ', foodItemUrl);
 		var foodId = a[a.length - 1];
 		if (!isNaN(a[a.length - 1])) {
-			xray(foodItemUrl, '#nutrition-facts tbody tr', [{
-				keys: ['td.col-1'],
-				values: ['td.col-2']
-			}])(function(err, obj) {
+			xray(foodItemUrl, '#main', {
+		    name: '.food-description',
+		    company: '#other-info .col-1 .secondary-title',
+		    nutrition: {
+		      nutritionName: ['td.col-1'],
+		      nutritionValue: ['td.col-2'],
+		    }
+			})(function(err, obj) {
 				if (!err) {
 					// console.log(foodId);
 					var t = createNutritionObject(foodId, obj);
-					
 					resolve(t);
 				} else {
 					console.log(err.stack);
@@ -78,16 +86,30 @@ function step3(foodItemUrl) {
 };
 
 function createNutritionObject(foodId, obj) {
-		obj.nutritionalTable = {foodId: foodId};
-		
-	  _.map(obj, function map(objValue) {
-	  	for (var i = 0; i < objValue.keys.length; i++) {
-	  		if (objValue.keys[i].trim())
-	  			obj.nutritionalTable[objValue.keys[i]] = objValue.values[i];
-	  	}
-	  });
+		// obj.nutritionValue = {foodId: foodId};
+		obj.foodId = foodId;
+		obj.company = obj.company.substring(10, obj.company.length);
+	  // _.map(obj, function map(objValue) {
+	  // 	for (var i = 0; i < objValue.keys.length; i++) {
+	  // 		if (objValue.keys[i].trim())
+	  // 			obj.nutrition[objValue.keys[i]] = objValue.values[i];
+	  // 	}
+	  // });
+		for (var i = 0; i < obj.nutrition.nutritionName.length; i++) {
+			if (obj.nutrition.nutritionName[i].trim())
+				obj.nutrition[obj.nutrition.nutritionName[i]] = obj.nutrition.nutritionValue[i];
+		}
+		delete obj.nutrition.nutritionName;
+		delete obj.nutrition.nutritionValue;
   	
-  	db.fooditem.insert(obj.nutritionalTable);
+  	console.log('inserting ', obj);
+  	db.fooditem.insert(obj, function(err, row) {
+  		if (err) {
+  			console.log('error line 108: ', err.stack);
+  		} else {
+  			console.log(row);
+  		}
+  	});
 
 	  return obj;
 };
@@ -110,4 +132,3 @@ function getpages(link) {
 // 	if (!err)
 // 		createNutritionObject(obj);
 // });
-
