@@ -7,7 +7,7 @@
 
 
 <body>
-	<form id="form01" action='/fooditem' method='post'>
+	<form id="form01" action='/api/fooditems' method='post'>
 		<div class="form-group">
 	    <label class="col-sm-2 control-label">Food ID</label>
 	    <div class="col-sm-10">
@@ -117,13 +117,14 @@
 					data = form.serialize(),
 					url = form.attr('action');
 			$.ajax({
-				url: '/fooditem',
+				url: '/api/fooditems',
 				data: data,
 				type: 'post'
 			}).done(function(data) {
-				alert('inserted');
+				form.trigger('reset');
+				alert('Record inserted successfully');
 			}).fail(function() {
-				alert('fail');
+				alert('Record insertion failed.');
 			});
 		});
 	</script>

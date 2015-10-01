@@ -44,9 +44,9 @@ module.exports.routes = {
 
 
   'get /api/fooditems': 'FoodItemController.query',
-  'post /fooditems/': 'FoodItemController.post',
-  'post /fooditem/insert': 'FoodItemController.insert',
-  'get /fooditems': 'FoodItemController.get'
+  'post /api/fooditems': 'FoodItemController.insert',
+  'get /fooditems': 'FoodItemController.get',
+
 
   /***************************************************************************
   *                                                                          *
