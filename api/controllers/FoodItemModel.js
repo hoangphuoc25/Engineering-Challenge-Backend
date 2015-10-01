@@ -18,7 +18,7 @@ module.exports = {
 		db.fooditem.findOne({foodId: foodId}, function(err, row) {
 			console.log(row);
 			if (!err) {
-				callbackSuccess(row);
+				callbackSuccess(row.nutrition);
 			} else {
 				console.log(err);
 				callbackFail();
