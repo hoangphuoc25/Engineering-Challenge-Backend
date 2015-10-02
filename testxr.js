@@ -35,23 +35,6 @@ function step2(foodTypeUrl) {
 	});
 }
 
-step1()
-	.map(function map(objChild) {
-		return step2(objChild.link);
-	})
-	.then(function then(step1Result) {
-		step1Result = [].concat.apply([], step1Result);
-		return step1Result;
-	})
-	.map(function map(objChild) {
-		return step3(objChild.link);
-	})
-	.then(function then(arr) {
-		db.close()
-	})
-	.catch(function error(err) {
-		console.log(err.stack);
-	});
 
 function step3(foodItemUrl) {
 	return new Promise(function Promise(resolve, reject) {
@@ -100,13 +83,20 @@ function createNutritionObject(foodId, obj) {
 	return obj;
 };
 
-function getpages(link) {
-	var result = [];
-	x(link, '.pagination.alt.padtop', ['a'])(function(err, obj) {
-		var max = parseInt(obj[obj.length - 2], 10);
-		for (var i = 0; i < max; i++) {
-			result.push(link + '/' + i);
-		}
-		return result;
+step1()
+	.map(function map(objChild) {
+		return step2(objChild.link);
+	})
+	.then(function then(step1Result) {
+		step1Result = [].concat.apply([], step1Result);
+		return step1Result;
+	})
+	.map(function map(objChild) {
+		return step3(objChild.link);
+	})
+	.then(function then(arr) {
+		db.close()
+	})
+	.catch(function error(err) {
+		console.log(err.stack);
 	});
-}

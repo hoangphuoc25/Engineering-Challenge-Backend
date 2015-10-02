@@ -1,3 +1,7 @@
+'use strict';
+var sinon = require('sinon');
+var sinonBluebird = require('sinon-bluebird');
+
 module.exports = {
 
 	// mock some objects for testing
@@ -7,28 +11,44 @@ module.exports = {
 	},
 
 	res : {
-		status : function() {
-			return this;
-		},
-
-		json : function() {
-			return this;
-		}
+		status : sinon.stub().returnsThis(),
+		json : sinon.stub().returnsThis(),
+    view : sinon.stub().returnsThis()
 	},
 
 	FoodItemModel : {
-		insert : function insert() {
-			return this;
-		},
-
-		then : function then() {
-			return this;
-		}
+		insert : sinon.stub(),
+    getById : sinon.stub()
 	},
 
 	FoodItemSearch : {
-		search : function search() {
+		search : sinon.stub().returnsThis(),
+    then : sinon.stub().returnsThis()
+	},
 
-		}
-	}
+  mongojs : {
+    db : {},
+    func : function func() {
+      return module.exports.mongojs.db
+    }
+  },
+
+  elasticsearch : {
+    search : sinon.spy(),
+    Client : function Client() {
+      this.search = module.exports.elasticsearch.search;
+    }
+  },
+
+  xray : {
+    error : null,
+    dataCallback : {},
+    xray : sinon.stub().returns(function callback(cb) {
+      cb(module.exports.xray.error, module.exports.xray.dataCallback);
+    }),
+
+    func : function() {
+      return module.exports.xray.xray;
+    }
+  }
 }

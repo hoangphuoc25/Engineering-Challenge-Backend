@@ -14,11 +14,14 @@ module.exports = {
 			}
 		});
 	},
+  
 	getById: function search(foodId, callbackFail, callbackSuccess) {
 		db.fooditem.findOne({foodId: foodId}, function(err, row) {
-			console.log(row);
 			if (!err) {
-				callbackSuccess(row.nutrition);
+				if (row)
+					callbackSuccess(row.nutrition);
+				else 
+					callbackSuccess({"error": "no record found"});	
 			} else {
 				console.log(err);
 				callbackFail();
