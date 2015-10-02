@@ -41,7 +41,6 @@ describe('[ Unit FoodItemModel ]', function desc() {
   };
 
   beforeEach(function beforeEach() {
-    findOneStub = sinon.stub();
     callbackFailSpy = sinon.spy();
     callbackSuccessSpy = sinon.spy();
     dbStub = mock.mongojs.db;

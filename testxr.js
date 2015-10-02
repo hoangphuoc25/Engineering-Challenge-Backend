@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 
 var mongojs = require('mongojs');
-var dbUrl = 'phuoc_2';
+var dbUrl = 'phuoc_5';
 var collections = ['fooditem'];
 var db = mongojs(dbUrl, collections);
 
@@ -74,7 +74,8 @@ function createNutritionObject(foodId, obj) {
  	console.log('inserting ', obj);
 	db.fooditem.insert(obj, function(err, row) {
 		if (err) {
-			console.log('error line 108: ', err.stack);
+			console.log(row);
+			console.log('error line 108: ', err);
 		} else {
 			console.log(row);
 		}

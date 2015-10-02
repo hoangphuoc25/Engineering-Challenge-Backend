@@ -31,7 +31,7 @@
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js",
-    "test": "mocha test/bootstrap.test.js test/**/*.js"
+    "test": "mocha test/bootstrap.test.js test/e2e/*.js test/unit/**/*.js"
   },
   "main": "app.js",
   "repository": {

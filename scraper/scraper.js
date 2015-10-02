@@ -3,7 +3,7 @@ var Xray = require('x-ray');
 var Promise = require('bluebird');
 var mongojs = require('mongojs');
 var _ = require('lodash');
-var dbUrl = 'phuoc_2';
+var dbUrl = 'phuoc_5';
 var collections = ['fooditem'];
 var db = mongojs(dbUrl, collections);
 var xray = Xray();
@@ -66,7 +66,11 @@ function getFoodItemPerDish(foodDishUrl) {
         }
       })(function result(err, foodItem) {
         if (!err) {
-          resolve({foodId : foodId, foodItem : foodItem});
+          if(foodItem) {
+            resolve({foodId : foodId, foodItem : foodItem});  
+          } else {
+            resolve(null);
+          }
         } else {
           reject(err);
         }
@@ -80,9 +84,16 @@ function getFoodItemPerDish(foodDishUrl) {
 function addFoodItem(foodId, foodItem) {
   return new Promise(function Promise(resolve, reject) {
 
+    // append foodId
+    foodItem.foodId = foodId;
+
     // Ex : {foodItem.company} -> "More from Sonic"
     // after substring -> "Sonic"
-    foodItem.company = foodItem.company.substring(10, foodItem.company.length);
+    if(!foodItem.company) {
+      
+    } else {
+      foodItem.company = foodItem.company.substring(10, foodItem.company.length);
+    }
     
     // Ex nutrition :
     // nutrition : {nutritionName : ['name1', 'name2'],
@@ -115,35 +126,37 @@ function addFoodItem(foodId, foodItem) {
 };
 
 function invoke() {
-  return getFoodCatogory()
+  return module.exports.getFoodCatogory()
     .map(function map(foodCategory) {
       var foodCategoryUrl = foodCategory.link;
 
-      return getFoodDishPerCategory(foodCategoryUrl);
+      return module.exports.getFoodDishPerCategory(foodCategoryUrl);
     })
     .then(function then(foodDishArr) {
 
-      // [[{link : 'linkDis1', {link : 'linkDish2'}}]] 
+      // [[{link : 'linkDis1'},...], [{link : 'linkDish2'},...]] 
       // -> [{link : 'linkDish1'}, {link : 'linkDish2'}]
       return _.flatten(foodDishArr);
     })
     .map(function map(foodDish) {
       var foodDishUrl = foodDish.link;
 
-      return getFoodItemPerDish(foodDishUrl);
+      return module.exports.getFoodItemPerDish(foodDishUrl);
     })
     .map(function map(foodItemObj) {
       if(foodItemObj) {
         var foodId = foodItemObj.foodId;
         var foodItem = foodItemObj.foodItem;
 
-        return addFoodItem(foodId, foodItem);  
+        return module.exports.addFoodItem(foodId, foodItem);  
+      } else {
+        return;
       }
     })
     .then(function then() {
       db.close();
     })
     .catch(function error(err) {
-      console.log(err.stack);
+      db.close();
     });
 }

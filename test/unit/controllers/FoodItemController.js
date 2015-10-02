@@ -47,7 +47,11 @@ describe('[ Unit FooditemController ]', function desc() {
       sugar: '0',
       trans: '0',
       protein: '0',
-      cholesterol: '0' 
+      cholesterol: '0',
+      vitamina : '0',
+      vitaminc : '0',
+      calcium : '0',
+      iron : '0' 
     },
 
     listFoodItem : [{
@@ -203,7 +207,11 @@ describe('[ Unit FooditemController ]', function desc() {
           "Sugars" : data.foodItem.sugar,
           "Trans" : data.foodItem.trans,
           "Protein" : data.foodItem.protein,
-          "Cholesterol" : data.foodItem.cholesterol
+          "Cholesterol" : data.foodItem.cholesterol,
+          "Vitamin A": data.foodItem.vitamina,
+     			"Vitamin C": data.foodItem.vitaminc,
+     			"Calcium": data.foodItem.calcium,
+     			"Iron": data.foodItem.iron 
         }
       };
 
