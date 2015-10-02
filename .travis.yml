@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-	- "4.1"
+  - "4.1"
 before_script:
-	- npm install -g mocha
+  - npm install -g mocha
 script: mocha test/unit/**/*.js
