@@ -10,10 +10,13 @@ var FoodItemSearch = require('./FoodItemSearch');
 var _ = require('lodash');
 
 module.exports = {
+
+  // 'get /api/fooditems?id=:foodId&name=:name'
 	query: function(req, res) {
 		var itemName = req.query.name;
     var id = req.query.id;
 
+    // prioritize id over name
     if (id) {
       return FoodItem.getById(id, function error() {
         res.status(400).json({});
@@ -36,10 +39,12 @@ module.exports = {
     }
 	},
 
+  // 'get /fooditems'
 	get: function(req, res) {		
 		return res.view('addfooditem');
 	},
 
+  // 'post /api/fooditems'
 	insert: function(req, res) {
     var foodItem = {};
 

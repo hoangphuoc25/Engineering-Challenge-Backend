@@ -3,7 +3,7 @@ var Xray = require('x-ray');
 var Promise = require('bluebird');
 var mongojs = require('mongojs');
 var _ = require('lodash');
-var dbUrl = 'phuoc_5';
+var dbUrl = 'phuoc_2';
 var collections = ['fooditem'];
 var db = mongojs(dbUrl, collections);
 var xray = Xray();
@@ -14,7 +14,6 @@ module.exports.getFoodItemPerDish = getFoodItemPerDish;
 module.exports.addFoodItem = addFoodItem;
 module.exports.invoke = invoke;
 
-//---------------------
 function getFoodCatogory() {
   return new Promise(function Promise(resolve, reject) {
     xray('http://myfitnesspal.com/food/calorie-chart-nutrition-facts/', 
@@ -98,7 +97,6 @@ function addFoodItem(foodId, foodItem) {
     // Ex nutrition :
     // nutrition : {nutritionName : ['name1', 'name2'],
     //              nutritionValue : ['value1', 'value2']}
-    //              
     // Convert it to :
     // -> nutrition : {name1 : value1, name2 : value2} 
     var keyArr = foodItem.nutrition.nutritionName;

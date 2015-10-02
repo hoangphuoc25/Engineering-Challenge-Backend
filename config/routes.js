@@ -35,14 +35,7 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
-
-  'get /sleep/:id?': 'SleepController.find',
-  'post /sleep': 'SleepController.create',
-  'put /sleep/:id?': 'SleepController.update',
-  'delete /sleep/:id?': 'SleepController.destroy',
-
-
-
+  
   'get /api/fooditems': 'FoodItemController.query',
   'post /api/fooditems': 'FoodItemController.insert',
   'get /fooditems': 'FoodItemController.get',

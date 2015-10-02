@@ -9,7 +9,6 @@ module.exports = {
 			if(!err) {
 				callbackSuccess();
 			} else {
-				console.log(err);
 				callbackFail();
 			}
 		});
@@ -21,9 +20,8 @@ module.exports = {
 				if (row)
 					callbackSuccess(row.nutrition);
 				else 
-					callbackSuccess({"error": "no record found"});	
+					callbackSuccess({"error": "No record found with that foodId"});
 			} else {
-				console.log(err);
 				callbackFail();
 			}
 		})

@@ -1,7 +1,7 @@
 Scraper:
 	Scraper will start searching from http://www.myfitnesspal.com/food/calorie-chart-nutrition-facts, get all popular food tags, then scrape each food tag page for a list of food items and proceed to scrape each food item page.
 	To run the scraper: 
-		> node testxr.js
+		$ node scraper/scraperStart.js
 
 MongoDB setup:
 
@@ -18,13 +18,13 @@ After we have populated data in MongoDB using the scraper:
 	$ bin/plugin --install com.github.richardwilly98.elasticsearch/elasticsearch-river-mongodb/2.0.9
 	$ bin/plugin install elasticsearch/elasticsearch-mapper-attachments/2.7.0
 2) Convert the MongoDB into a Replica Set:
-	Modify /etc/mongod.conf, add this line:
+	Modify /etc/mongod.conf, add this line at the end:
 		replSet=rs0
 	Restart mongod, in mongo console:
 		> mongo phuoc_2
 		> config = { "_id" : "rs0", "members" : [ { "_id" : 0, "host" : "127.0.0.1:27017" } ] }
 		> rs.initiate(config)
-		> rs.slaveOk()
+		> rs.slaveOk()	
 3) Index the collection from MongoDB:
 	$ curl -XPUT localhost:9200/_river/phuoc_2/_meta -d '
 	{
@@ -56,7 +56,8 @@ Test:
 To run integration test: 
 	$ npm test
 To run unit tests:
-	$ npm unittest
+	$ npm install -g mocha
+	$ mocha test/unit/**/*.js
 
 Autocomplete:
 	The autocomplete feature is done by searching food items by name with elasticsearch.

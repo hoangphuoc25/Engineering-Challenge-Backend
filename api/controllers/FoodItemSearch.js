@@ -11,9 +11,9 @@ module.exports = {
 			type: 'fooditem',
 			body: {
 				query: {
-			  	match: {
-			    	name: itemName
-			  	}
+					match: {
+						name: itemName
+					}
 				}
 			}
 		});
