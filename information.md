@@ -29,7 +29,7 @@ After we have populated data in MongoDB using the scraper:
 	```
 	
 * Convert the MongoDB into a Replica Set:
-* 
+
 	Modify /etc/mongod.conf, add this line at the end:
 
 		replSet=rs0
@@ -42,6 +42,8 @@ After we have populated data in MongoDB using the scraper:
   > rs.initiate(config)
   > rs.slaveOk()
   ```
+
+* Start Elasticsearch: `$ bin/elasticsearch`
 		
 * Index the collection from MongoDB:
 
